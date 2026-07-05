@@ -7,9 +7,10 @@ import { useState } from "react";
 
 function ExpenseTracker(){
     const [currentName, setCurrentName] = useState("");
-    const [currentAmount, setCurrentAmount] = useState([]);
+    const [currentAmount, setCurrentAmount] = useState("");
+    const [currentDate, setCurrentDate] = useState("");
     const [expenses, setExpenses] = useState([]);
-    const [defaultText, setDefaultText] = useState(true);
+    const [sort, setSort] = useState("");
     const total = expenses.reduce((sum, expense)=>{
         return sum + Number(expense.amount);
     },0);
@@ -21,18 +22,23 @@ function ExpenseTracker(){
     function handleAmountChange(event){
         setCurrentAmount(event.target.value);
     }
+    function handleDateChange(event){
+        setCurrentDate(event.target.value);
+    }
     function addExpense(){
-        if((currentName.trim() !== "") && (currentAmount !== "") && ((Number(currentAmount) > 0 && Number(currentAmount) < 1000000000000)) && (currentName.length < 25)){
+        if((currentName.trim() !== "") && (currentAmount !== "") && (currentDate !== "") && ((Number(currentAmount) > 0 && Number(currentAmount) < 1000000000000)) && (currentName.length < 25)){
         setExpenses([...expenses,{
             name: currentName,
-            amount: currentAmount
+            amount: currentAmount,
+            date: currentDate
         }]);
         setCurrentName("");
         setCurrentAmount("");
+        setCurrentDate("");
         setError("");
         }
-        if(currentName.trim() == "" || currentAmount == ""){
-            setError("input cannot be empty")
+        if(currentName.trim() == "" || currentAmount == "" || currentDate == ""){
+            setError("input cannot be empty.")
         }
         if(currentAmount == '0' || currentAmount < 0){
             setError("amount cannot be 0 or less.")
@@ -46,6 +52,28 @@ function ExpenseTracker(){
     }
     function removeExpense(index){
         setExpenses(expenses.filter((_, i)=> i !== index));
+    }
+    function handleSortChange(event){
+        const selected = event.target.value;
+        setSort(selected);
+        const sorted = [...expenses];
+        if(selected == "highest"){
+            sorted.sort((x, y)=> Number(y.amount) - Number(x.amount));
+        }
+        if(selected == "lowest"){
+            sorted.sort((x, y)=> Number(x.amount) - Number(y.amount));
+        }
+        if(selected == "newest"){
+            sorted.sort((x, y)=> {
+                return new Date(y.date) - new Date(x.date);
+            });
+        }
+        if(selected == "oldest"){
+            sorted.sort((x, y)=>{
+                return new Date(x.date) - new Date(y.date);
+            });
+        }
+        setExpenses(sorted);
     }
     return(
         <>
@@ -62,6 +90,8 @@ function ExpenseTracker(){
                         <input value={currentName} onChange={handleNameChange} type="text" placeholder=" ex: rent"/>
                         <p>Amount(₹):</p>
                         <input value={currentAmount} onChange={handleAmountChange} type="number" placeholder=" ex: ₹10,000"/>
+                        <p>Date:</p>
+                        <input value={currentDate} onChange={handleDateChange} type="date"/>
                     </div>
                     <div className="buttonField">
                         {
@@ -71,12 +101,28 @@ function ExpenseTracker(){
                     </div>
                 </div>
                 <div className="expenses">
+                    {
+                        (expenses.length > 0) ? (
+                        <select className="sortExpense" onChange={handleSortChange}>
+                            <option value={""}>------sort by------</option>
+                            <option value={"newest"}>newest date first</option>
+                            <option value={"oldest"}>oldest date first</option>
+                            <option value={"highest"}>highest expense</option>
+                            <option value={"lowest"}>lowest expense</option>
+                        </select>
+                        ) : ("")
+                    }
                     {   (expenses.length === 0) ? (<p className="defaultText">No expenses yet.</p>) :    
                         (expenses.map((expense, index)=>
                             <div className="elements" key={index}>
-                                <p className="nameElement">{expense.name}</p>
-                                <p className="amountElement">₹{Number(expense.amount).toLocaleString()}</p>
-                                <button className="deleteButton" onClick={()=>removeExpense(index)}><FontAwesomeIcon icon={faTrash}/></button>
+                                <div className="elementUpper">
+                                    <p className="nameElement">{expense.name}</p>
+                                    <p className="amountElement">₹{Number(expense.amount).toLocaleString()}</p>
+                                    <button className="deleteButton" onClick={()=>removeExpense(index)}><FontAwesomeIcon icon={faTrash}/></button>
+                                </div>
+                                <div className="elementLower">
+                                    <p className="dateElement">{expense.date}</p>
+                                </div>
                             </div>
                         ))
                     }
