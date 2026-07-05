@@ -10,6 +10,7 @@ body{
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    background-color: white;
 }
 .container{
     display: flex;
@@ -95,10 +96,11 @@ body{
     border-bottom-right-radius: 10px;
 }
 .sortExpense{
-    color: gray;
+    color: black;
     border-radius: 10px;
     margin-bottom: 5px;
     text-align: center;
+    background-color: white;
 }
 .elements{
     margin-top: 5px;
