@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './ExpenseTracker.css'
+import './Finance_Dashboard.css'
 import App from './App.jsx';
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -1,8 +1,8 @@
-import ExpenseTracker from "./ExpenseTracker.jsx";
+import Finance_Dashboard from "./Finance_Dashboard.jsx";
 
 function App(){
     return(
-        <ExpenseTracker />
+        <Finance_Dashboard />
     );
 }
 export default App
