@@ -1,8 +1,8 @@
-import Finance_Dashboard from "./Finance_Dashboard.jsx";
+import FinanceDashboard from "./FinanceDashboard.jsx";
 
 function App(){
     return(
-        <Finance_Dashboard />
+        <FinanceDashboard />
     );
 }
 export default App

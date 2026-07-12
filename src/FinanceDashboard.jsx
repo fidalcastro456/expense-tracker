@@ -16,7 +16,7 @@ import {
 } from "recharts";
 import { useEffect, useState } from "react";
 
-function ExpenseTracker(){
+function FinanceDashboard(){
     const [currentType, setCurrentType] = useState("");
     const [currentName, setCurrentName] = useState("");
     const [currentAmount, setCurrentAmount] = useState("");
@@ -302,5 +302,5 @@ function ExpenseTracker(){
         </>
     );
 }
-export default ExpenseTracker 
+export default FinanceDashboard 
 {/* <p className="total">Total transactions: ₹{total.toLocaleString()}</p> */}
